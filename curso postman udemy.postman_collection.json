@@ -1,0 +1,1041 @@
+{
+	"info": {
+		"_postman_id": "358f04f1-335d-448d-afce-68cbdcf5e218",
+		"name": "curso postman udemy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17461778"
+	},
+	"item": [
+		{
+			"name": "Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status retornou o texto ok\", function () {\r",
+							"    pm.response.to.have.status('OK');\r",
+							"    pm.expect(responseJson.status).to.eql('OK');\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test('Status body ok', function(){\r",
+							"    pm.expect(pm.response.json().status).to.eql(\"OK\")\r",
+							"});\r",
+							"\r",
+							"pm.test('Tempo de resposta deve ser menor que 300ms', function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlBase}}/status",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Autenticação",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Token gerado com sucesso', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"    pm.expect(pm.response.json().accessToken).to.not.empty;\r",
+							"});\r",
+							"\r",
+							"pm.test('Gravar token na variavel accessToken', function(){\r",
+							"    pm.collectionVariables.set(\"accessToken\", pm.response.json().accessToken);\r",
+							"    pm.expect(pm.collectionVariables).to.not.empty;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"clientName\": \"{{$randomFullName}}\",\r\n   \"clientEmail\": \"{{$randomEmail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/api-clients/",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"api-clients",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lista de livros",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test('Status code retornou 200', function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Code retornou OK', function(){\r",
+							"    pm.response.to.have.status('OK');\r",
+							"    pm.expect(pm.response.status).to.eql('OK');\r",
+							"})\r",
+							"\r",
+							"pm.test('Busca por ID não filtra e retorna 200', function(){\r",
+							"    // o campo de buspa por ID é \"bookId\" e não \"id\" que aparece no body\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Busca por available não filtra e retorna 200', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Busca por name não filtra e retorna 200', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Busca por limit sem valor retorna 200', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Busca por limit igual a zero retorna 200', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test('Busca por limit maior que zero retorna 200', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/books?type=fiction&id=3&available=false&limit=10&name=Untamed",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "fiction"
+						},
+						{
+							"key": "type",
+							"value": "non-fiction",
+							"disabled": true
+						},
+						{
+							"key": "id",
+							"value": "3"
+						},
+						{
+							"key": "available",
+							"value": "false"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "name",
+							"value": "Untamed"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar livros type invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test('Status code retornou 400', function(){\r",
+							"    pm.response.to.have.status(400);\r",
+							"    pm.expect(pm.response.code).to.eql(400);\r",
+							"    pm.response.to.have.status('Bad Request');\r",
+							"    pm.expect(pm.response.status).to.eql('Bad Request');\r",
+							"})\r",
+							"\r",
+							"pm.test('Mensagem error', function(){\r",
+							"    const resposta = pm.response.json()\r",
+							"   pm.expect(pm.response.json().error).to.eql(\"Invalid value for query parameter 'type'. Must be one of: fiction, non-fiction.\");\r",
+							"   pm.expect(resposta.error).to.eql(\"Invalid value for query parameter 'type'. Must be one of: fiction, non-fiction.\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/books?type=sdfsfsdf",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "sdfsfsdf"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar 1 livro com bookIdválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Consultar 1 livro informando bookId válido', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"    pm.expect(pm.response.json().id).to.eql(5)\r",
+							"    pm.expect(pm.response.json().id).greaterThan(0)\r",
+							"    pm.expect(pm.response.json().type).to.be.oneOf(['fiction','non-fiction'])\r",
+							"     pm.expect(pm.response.json().price).greaterThan(0)\r",
+							"     pm.expect(pm.response.json().available).to.be.oneOf([true,false])\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlBase}}/books/:bookId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"books",
+						":bookId"
+					],
+					"variable": [
+						{
+							"key": "bookId",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar livro sem informar bookId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Consultar livro sem informar bookId', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(404)\r",
+							"    pm.expect(pm.response.json().error).to.eql(\"No book with id NaN\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlBase}}/books/:bookId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"books",
+						":bookId"
+					],
+					"variable": [
+						{
+							"key": "bookId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar livro com bookId inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Consultar livro sem informar bookId', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(404)\r",
+							"    pm.expect(pm.response.json().error).to.eql(\"No book with id NaN\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlBase}}/books/:bookId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"books",
+						":bookId"
+					],
+					"variable": [
+						{
+							"key": "bookId",
+							"value": "A"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar livro com bookId inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Consultar livro sem informar bookId', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(404)\r",
+							"    pm.expect(pm.response.json().error).to.eql(\"No book with id 33\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlBase}}/books/:bookId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"books",
+						":bookId"
+					],
+					"variable": [
+						{
+							"key": "bookId",
+							"value": "33"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reservar um livro",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Reservar um livro com sucesso', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"    pm.expect(pm.response.status).to.eql('Created');\r",
+							"    pm.expect(pm.response.json().created).to.eql(true);\r",
+							"    pm.expect(pm.response.json().orderId).to.not.empty;\r",
+							"})\r",
+							"\r",
+							"pm.test('Salvar orderId para usar na remoção', function(){\r",
+							"    pm.collectionVariables.set(\"orderId\", pm.response.json().orderId);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"{{$randomFullName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reservar um livro c var aleatoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Reserva criada com sucesso', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"    pm.expect(pm.response.status).to.eql('Created');\r",
+							"    pm.expect(pm.response.json().created).to.eql(true);\r",
+							"    pm.expect(pm.response.json().orderId).to.not.empty;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"{{$randomFullName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reservar livro bookId vazio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Mensagem error', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(400);\r",
+							"    pm.expect(pm.response.status).to.eql('Bad Request');\r",
+							"   pm.expect(pm.response.json().error).to.eql(\"Invalid or missing bookId.\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": \" \",\r\n  \"customerName\": \"{{$randomFullName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reservar livro customerName vazio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Mensagem error', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(404);\r",
+							"    pm.expect(pm.response.status).to.eql('Not Found');\r",
+							"   pm.expect(pm.response.json().error).to.eql(\"This book is not in stock. Try again later.\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 2,\r\n  \"customerName\": \" \"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reservar livro sem campos obrigatórios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Mensagem error', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(400);\r",
+							"    pm.expect(pm.response.status).to.eql('Bad Request');\r",
+							"   pm.expect(pm.response.json().error).to.eql(\"Invalid or missing bookId.\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retornar todas as reservas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Retorna lista', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"    pm.expect(pm.response.json()).to.be.a('array');\r",
+							"});\r",
+							"\r",
+							"pm.test('Atribui valor do ID para variavel orderId', function(){\r",
+							"    pm.collectionVariables.set(\"orderId\", pm.response.json()[0].id);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlBase}}/orders",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retorna uma reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Retorna um objeto reserva', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"    pm.expect(pm.response.json()).to.be.a('object');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{urlBase}}/orders/:orderId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza reserva",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Atualiza reserva com sucesso', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(204);\r",
+							"    pm.expect(pm.response.body).to.not.exist;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customerName\": \"Vinicius Nascimento 2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders/:orderId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remover reserva inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Retorna 404', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(404);\r",
+							"    pm.expect(pm.response.body).to.not.exist;\r",
+							"    pm.expect(pm.response.json().error).to.not.empty;\r",
+							"})\r",
+							"\r",
+							"pm.test('Retorna msg error com orderId inexistente', function(){\r",
+							"    pm.expect(pm.response.json().error).to.have.string(\"No order with id\");\r",
+							"    pm.expect(pm.response.json().error).to.have.string(\"No order with id 0fIKP5eJZnbShWJSA7LA6.\");\r",
+							"    \r",
+							"    pm.expect(pm.response.json().error).to.have.string(`${\"No order with id\"} ${\"0fIKP5eJZnbShWJSA7LA6\"}${\".\"}`);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders/:orderId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "0fIKP5eJZnbShWJSA7LA6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remover reserva não informada",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Retorna 404', function(){\r",
+							"    pm.expect(pm.response.code).to.eql(404);\r",
+							"    pm.expect(pm.response.body).to.not.exist;\r",
+							"    pm.expect(pm.response.json().error).to.not.empty;\r",
+							"})\r",
+							"\r",
+							"pm.test('Retorna msg error com orderId não informado', function(){\r",
+							"    pm.expect(pm.response.json().error).to.have.string(\"No order with id :orderId.\");\r",
+							"    pm.expect(pm.response.json().error).to.have.string(\"No order with id :orderId.\");\r",
+							"    \r",
+							"    pm.expect(pm.response.json().error).to.have.string(`${\"No order with id\"} ${\":orderId.\"}`);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders/:orderId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remover reserva",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{urlBase}}/orders/:orderId",
+					"host": [
+						"{{urlBase}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "urlBase",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "orderId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
